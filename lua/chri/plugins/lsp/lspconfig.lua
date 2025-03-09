@@ -100,6 +100,21 @@ return {
                     end,
                 })
             end,
+            ["clangd"] = function()
+                lspconfig["clangd"].setup({
+                    capabilities = capabilities,
+                    cmd = {
+                        "clangd",
+                        "--background-index",
+                        "--clang-tidy",
+                        "--completion-style=detailed",
+                        "--header-insertion=never",
+                        "--fallback-style=LLVM",
+                    },
+                    filetypes = { "c", "cpp", "h" },
+                    root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
+                })
+            end,
             ["graphql"] = function()
                 -- configure graphql language server
                 lspconfig["graphql"].setup({
@@ -120,20 +135,6 @@ return {
                         "scss",
                         "less",
                         "svelte",
-                    },
-                })
-            end,
-            ["c"] = function()
-                -- 設定 clangd 作為 C 語言的 LSP
-                lspconfig["clangd"].setup({
-                    capabilities = capabilities,
-                    filetypes = { "c", "cpp", "objc", "objcpp" },
-                    cmd = {
-                        "clangd",
-                        "--background-index",
-                        "--clang-tidy",
-                        "--completion-style=detailed",
-                        "--header-insertion=never",
                     },
                 })
             end,

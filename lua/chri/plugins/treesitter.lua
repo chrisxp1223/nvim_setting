@@ -37,6 +37,7 @@ return {
                 "dockerfile",
                 "vimdoc",
                 "c",
+                "make",
             },
             incremental_selection = {
                 enable = true,
