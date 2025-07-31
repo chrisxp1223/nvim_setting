@@ -33,7 +33,6 @@ return {
                 "vim",
                 "gitignore",
                 "python",
-                "vim",
                 "dockerfile",
                 "vimdoc",
                 "c",
