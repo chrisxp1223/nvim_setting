@@ -21,10 +21,8 @@ return {
                 ["{"] = "prev_up", -- 跳到上一個較高層級
                 ["}"] = "next_up", -- 跳到下一個較高層級
             },
-            -- 自動開啟 `aerial`
-            open_automatic = function(bufnr)
-                return vim.api.nvim_buf_line_count(bufnr) > 80 -- 只對大於 80 行的文件開啟
-            end,
+            -- 不自動開啟，只讓使用者按 F5 手動開啟
+            open_automatic = false,
         })
 
         -- 快捷鍵設定
