@@ -1,0 +1,52 @@
+-- ~/.config/nvim/lua/tags_autogen.lua
+local M = {}
+
+local function project_root()
+  local root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
+  return (root and root ~= "") and root or vim.fn.getcwd()
+end
+
+function M.refresh()
+  local root = project_root()
+  vim.notify("Refreshing tags/cscope for " .. root, vim.log.levels.INFO)
+
+  vim.system(
+    { "bash", "-c",
+      string.format(
+        "cd %s && find . -path './Build' -prune -o -path './Conf' -prune -o " ..
+        "\\( -name '*.c' -o -name '*.h' \\) -print > cscope.files && " ..
+        "cscope -Rb -i cscope.files && " ..
+        "ctags -R --exclude=Build --exclude=Conf --exclude=.git .",
+        root
+      )
+    },
+    { text = true },
+    function(obj)
+      if obj.code == 0 then
+        vim.schedule(function()
+          vim.notify("tags/cscope refreshed: " .. root, vim.log.levels.INFO)
+        end)
+      else
+        vim.schedule(function()
+          vim.notify("tags refresh failed: " .. obj.stderr, vim.log.levels.ERROR)
+        end)
+      end
+    end
+  )
+end
+
+function M.setup()
+  vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+    callback = function()
+      local root = project_root()
+      local marker = root .. "/.tags_generated"
+      if vim.fn.filereadable(marker) == 0 then
+        M.refresh()
+        vim.fn.writefile({}, marker)
+      end
+    end,
+  })
+  vim.api.nvim_create_user_command("TagsRefresh", M.refresh, {})
+end
+
+return M

@@ -7,7 +7,7 @@ return {
             layout = {
                 max_width = { 50, 0.3 }, -- 最大寬度 40，或視窗 30% 大小
                 min_width = 30, -- 最小寬度
-                default_direction = "left", -- 預設放右側
+                default_direction = "right", -- 預設放右側
             },
             attach_mode = "global", -- 全部 buffer 共用 `aerial`
             filter_kind = { "Class", "Struct", "Function", "Method", "Constructor", "Variable", "Feild", "Enum" },

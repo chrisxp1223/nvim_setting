@@ -27,10 +27,10 @@ return {
 
                 -- set keybinds
                 opts.desc = "Show LSP references"
-                keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+                keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
                 opts.desc = "Go to declaration"
-                keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+                keymap.set("n", "gj", vim.lsp.buf.declaration, opts) -- go to declaration
 
                 opts.desc = "Show LSP definitions"
                 keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
@@ -99,21 +99,6 @@ return {
                             end,
                         })
                     end,
-                })
-            end,
-            ["clangd"] = function()
-                lspconfig["clangd"].setup({
-                    capabilities = capabilities,
-                    cmd = {
-                        "clangd",
-                        "--background-index",
-                        "--clang-tidy",
-                        "--completion-style=detailed",
-                        "--header-insertion=never",
-                        "--fallback-style=LLVM",
-                    },
-                    filetypes = { "c", "cpp", "h" },
-                    root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
                 })
             end,
             ["graphql"] = function()

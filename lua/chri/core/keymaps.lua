@@ -9,7 +9,6 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
-
 -- windwos managment
 keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Spilit window vertically" })
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Spilit window horizontally" })
@@ -27,3 +26,12 @@ keymap.set("n", "<A-2>", ":bnext<CR>", { desc = "Next bubber" })
 keymap.set("n", "<A-1>", ":bprevious<CR>", { desc = "prvious buffer" })
 keymap.set("n", "<leader>x", ":bdelete!<CR>", { desc = "close buffer" }) -- close buffer
 keymap.set("n", "<leader>b", "<cmd> enew <CR>", { desc = "new buffeer" }) -- new buffer
+
+local map = vim.keymap.set
+map("n", "<leader>cs", ':cs find s <C-R>=expand("<cword>")<CR><CR>', { desc = "Find symbol" })
+map("n", "<leader>cg", ':cs find g <C-R>=expand("<cword>")<CR><CR>', { desc = "Find definition" })
+map("n", "<leader>cc", ':cs find c <C-R>=expand("<cword>")<CR><CR>', { desc = "Find callers" })
+map("n", "<leader>ct", ':cs find t <C-R>=expand("<cword>")<CR><CR>', { desc = "Find text string" })
+map("n", "<leader>ce", ':cs find e <C-R>=expand("<cword>")<CR><CR>', { desc = "Find egrep pattern" })
+map("n", "<leader>cf", ':cs find f <C-R>=expand("<cfile>")<CR><CR>', { desc = "Find file" })
+map("n", "<leader>ci", ':cs find i <C-R>=expand("<cfile>")<CR><CR>', { desc = "Find includers" })

@@ -7,7 +7,10 @@ return {
     config = function()
         require("bufferline").setup({
             options = {
-                offsets = { { filetype = "NvimTree", text = "File Explorer", text_align = "center", padding = 1 } },
+                offsets = {
+                    { filetype = "NvimTree", text = "Explorer", text_align = "left", highlight = "Directory" },
+                    { filetype = "aerial", text = "Symbols", text_align = "right", highlight = "Directory" },
+                },
                 mode = "buffers", -- set to "tabs" to only show tabpages instead
                 themable = true, -- allows highlight groups to be overriden i.e. sets highlights as default
                 numbers = "none", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
@@ -20,7 +23,7 @@ return {
                 right_trunc_marker = "",
                 max_name_length = 30,
                 max_prefix_length = 30, -- prefix used when a buffer is de-duplicated
-                tab_size = 21,
+                tab_size = 22,
                 diagnostics = false,
                 diagnostics_update_in_insert = false,
                 color_icons = true,
