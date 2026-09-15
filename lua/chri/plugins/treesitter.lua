@@ -1,52 +1,59 @@
+local parsers = {
+    "json",
+    "javascript",
+    "typescript",
+    "yaml",
+    "html",
+    "markdown",
+    "markdown_inline",
+    "bash",
+    "lua",
+    "vim",
+    "gitignore",
+    "python",
+    "dockerfile",
+    "vimdoc",
+    "c",
+    "make",
+}
+
 return {
     "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     build = ":TSUpdate",
     dependencies = {
         "windwp/nvim-ts-autotag",
     },
     config = function()
-        -- improt nvim-treesitter plugin
-        local treesitter = require("nvim-treesitter.configs")
+        local treesitter = require("nvim-treesitter")
 
-        -- configure treesitter
-        treesitter.setup({
-            highlight = {
-                enable = true,
-            },
-            -- enable indentation
-            indent = { enable = true },
-            autotag = {
-                enable = true,
-            },
-            -- ensure these lang parsers are installed
-            ensure_installed = {
-                "json",
-                "javascript",
-                "typescript",
-                "yaml",
-                "html",
-                "markdown",
-                "markdown_inline",
-                "bash",
-                "lua",
-                "vim",
-                "gitignore",
-                "python",
-                "dockerfile",
-                "vimdoc",
-                "c",
-                "make",
-            },
-            incremental_selection = {
-                enable = true,
-                keymaps = {
-                    init_selection = "<TAB>",
-                    node_incremental = "<TAB>",
-                    scope_incremental = false,
-                    node_decremental = "<bs>",
-                },
-            },
+        treesitter.setup()
+        treesitter.install(parsers)
+
+        require("nvim-ts-autotag").setup()
+
+        local group = vim.api.nvim_create_augroup("chri-treesitter", { clear = true })
+
+        vim.api.nvim_create_autocmd("FileType", {
+            group = group,
+            callback = function(args)
+                local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+
+                if not lang or not vim.treesitter.language.add(lang) then
+                    return
+                end
+
+                vim.treesitter.start(args.buf, lang)
+                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+                local opts = { buffer = args.buf, silent = true }
+                vim.keymap.set({ "n", "x" }, "<Tab>", function()
+                    vim.treesitter.select("parent")
+                end, opts)
+                vim.keymap.set("x", "<BS>", function()
+                    vim.treesitter.select("child")
+                end, opts)
+            end,
         })
     end,
 }
